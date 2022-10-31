@@ -1,0 +1,58 @@
+WRAPPER EXP 6
+
+
+
+CLICK ON NEW THEN JAVA PROJECT THEN NAME IT AS middleware THEN CLICK next THEN CLICK finish
+
+Sender.java----------------------------- //A CLASS create by right clicking on middleware 
+
+package wrapper;
+
+import java.net.*; 
+import java.util.*; 
+public class Sender {
+public static void main(String[] args) throws Exception{ 
+
+	Scanner scn=new Scanner(System.in); 
+	System.out.println("Enter your Message:");
+	String str=scn.nextLine(); 
+	DatagramSocket ds=new DatagramSocket();
+	InetAddress ip=InetAddress.getByName("127.0.0.1"); 
+	DatagramPacket dp=new 
+	DatagramPacket(str.getBytes(),str.length(),ip,3000); 
+	ds.send(dp);
+	ds.close();
+	System.out.println("Message has been sent to Receiver Class Please Check:"+str);
+}
+}
+
+
+Receiver.java-------------------------// A CLASS create by right clicking on middleware 
+
+package wrapper;
+
+import java.net.*; 
+public class Receiver {
+	public static void main(String[] args) throws Exception{ 
+	System.out.println("Waiting for sender to send message"); 
+	DatagramSocket ds=new DatagramSocket(3000);
+	byte[] buf=new byte[1024];
+	DatagramPacket dp=new DatagramPacket(buf,1024); 
+	ds.receive(dp);
+	String str=new String(dp.getData(),0,dp.getLength()); 
+	System.out.print(str);
+	ds.close();
+	System.out.println("Message received Successfully..");
+}
+}
+
+AFTER CREATING ABOVE CLASSES SEARCH FOR THE GREEN BUTTON THAT SAYS 'Run Receiver.java'
+THEN RUN Server.java by same method as above
+
+
+
+
+
+
+
+

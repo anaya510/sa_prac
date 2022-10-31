@@ -1,0 +1,125 @@
+RMI EXP 4
+
+CLICK ON NEW THEN JAVA PROJECT THEN NAME IT AS RMI_demo THEN CLICK next THEN CLICK finish
+
+
+IHello.java------------ //AN INTERFACE (create by right clicking on RMI_demo)
+
+import java.rmi.*;
+
+public interface IHello extends Remote{
+
+	public String message() throws RemoteException;
+
+}
+
+[compile this file by right clicking on IHello.java then click Show In then select terminal then on terminal type javac IHello.java]
+
+
+
+
+HelloImpl.java-------- // A CLASS (create by right clicking on RMI_demo)
+
+import java.rmi.*;
+import java.rmi.server.*;
+
+public class HelloImpl extends UnicastRemoteObject 
+	implements IHello{
+
+   public HelloImpl() throws RemoteException {
+	//There is no action need in this moment.
+	}
+
+   public String message() throws RemoteException { 
+	return ("Hello");
+	}
+}
+
+[compile this file by right clicking on HelloImpl.java then click Show In then select terminal then on terminal type javac HelloImpl.java]
+
+
+
+
+HelloServer.java----------------- //A CLASS (create by right clicking on RMI_demo)
+
+import java.rmi.*;
+
+public class HelloServer {
+
+private static final String host = "localhost";
+
+public static void main(String[] args) throws Exception {
+//** Step 1
+//** Declare a reference for the object that will be implemented 
+	HelloImpl temp = new HelloImpl();
+
+//** Step 2
+//** Declare a string variable for holding the URL of the object's name 
+	String rmiObjectName = "rmi://" + host + "/Hello";
+
+//Step 3
+//Binding the object reference to the object name. 
+	Naming.rebind(rmiObjectName, temp);
+
+//Step 4
+//Tell to the user that the process is completed. 
+	System.out.println("Binding complete...\n");
+}
+}
+
+[compile this file by right clicking on HelloServer.java then click Show In then select terminal then on terminal type javac HelloServer.java]
+
+
+
+
+
+HelloClient.java---------------- //A CLASS (create by right clicking on RMI_demo)
+
+import java.rmi.ConnectException;
+import java.rmi.Naming;
+
+public class HelloClient
+{
+	private static final String host = "localhost";
+
+	public static void main(String[] args)
+	{
+		try
+		{
+
+		//We obtain a reference to the object from the registry and next,
+		//it will be typecasted into the most appropiate type. 
+		IHello greeting_message = (IHello) Naming.lookup("rmi://"
+		+ host + "/Hello");
+
+		//Next, we will use the above reference to invoke the remote
+		//object method. 
+		System.out.println("Message received: " +
+			greeting_message.message());
+		}
+
+		catch (ConnectException conEx)
+		{
+			System.out.println("Unable to connect to server!");
+			System.exit(1);
+		}
+		catch (Exception ex)
+		{
+			ex.printStackTrace(); 
+			System.exit(1);
+		}
+	}
+}
+
+[compile this file by right clicking on HelloClient.java then click Show In then select terminal then on terminal type javac HelloClient.java]
+
+
+AFTER COMPILING HelloServer STAY ON THE TERMINAL AND TYPE 'start rmiregistry' (after typing this, dont close the pop up window that comes, just minimize it)
+
+THEN 'java HelloClient.java'
+
+
+
+
+
+
